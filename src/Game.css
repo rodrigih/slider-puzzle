@@ -1,0 +1,25 @@
+.game-board{ 
+  display: inline-flex;
+  flex-direction: column;
+  border: 5px groove grey;
+} 
+
+.row > div{
+  display: flex;
+  min-width: 50px;
+  min-height: 50px;
+  border: thin solid black;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10%;
+}
+
+.red-square{
+  background-color: #C11200;
+  color: #DDDDDD;
+}
+
+.beige-square{
+  background-color: #FCF3CF;
+  color: #222222;
+}
