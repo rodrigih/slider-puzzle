@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './Game.css'
+import './Game.css';
+import Debug from './Debug';
 
 function Square(props){
   return (
@@ -7,55 +8,60 @@ function Square(props){
         {props.value}
       </div>
   );
-}
-
+} 
 
 class Board extends Component{ 
 
-  renderSquare(i) {
-
-    return (
-      <Square
-        key={i}
-        value={i}
-      />
-    );
-  }
-
-  /* Creates an N x N board */
-  createBoard(n){
-    var board = [];
-
-    var currNum = 1;
-
-    for(var i = 0; i < n; i++){ 
-      var row = [];
-      for(var j = 0; j < n; j++){ 
-        // Don't add last square
-        if (i != (n-1) || j != (n-1)){
-          row.push(this.renderSquare(currNum));
-          currNum++;
-        }
+  renderSquare(val){
+     if (val === null){
+        return val;
       }
 
-      board.push(
-          <div className="flex row" key={`row${i}`}> {row} </div>
-      );
-    }
+      return (
+        <Square
+          key={val}
+          value={val}
+        />
+      ); 
+  }
 
-    return (<div className="inline-flex game-board">{board}</div>);
+  drawBoard(){
+    const board = this.props.board; 
+
+    return (
+      <div className="inline-flex game-board">
+        {board.map(
+          (curr, i) => (<div className="flex row" key={`row${i}`}> {curr.map(this.renderSquare)} </div>)
+         )
+        }
+      </div>
+    ); 
   } 
 
   render(){
-    return this.createBoard(4);
+    return this.drawBoard();
   }
 }
 
 class Game extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      board: [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, null]
+      ]
+    };
+  }
+
   render(){
     return (
       <div className="Game">
-        <Board />
+        <Board
+          board={this.state.board}
+        />
       </div>
     );
   }
