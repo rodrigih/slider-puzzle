@@ -3,7 +3,7 @@ import './Game.css';
 
 function Square(props){
   var colour;
-  if (props.value == null){
+  if (props.value == null) {
     colour = "";
   }
   else{
@@ -18,7 +18,6 @@ function Square(props){
 
 
 class Board extends Component{ 
-
   renderSquare(val, i){ 
       return (
         <Square
@@ -48,7 +47,9 @@ class Board extends Component{
 
 class Game extends Component {
   constructor(props){
-    super(props);
+    super(props); 
+
+    /* Set initial state */
     this.state = {
       grid: [
         [1, 2, 3, 4],
@@ -57,79 +58,111 @@ class Game extends Component {
         [13, 14, 15, null]
       ], 
       emptyPos: [3,3]
-    };
+    }; 
+
+    /* Define functions to move squares here so grid can be randomized on initialization */
+
+    this.moveSquareVertical = function(direction){
+      const row = this.state.emptyPos[0];
+      const column = this.state.emptyPos[1]; 
+
+      // Do nothing if move is invalid
+      if ( (direction == "up" && row == 3) || (direction == "down" && row == 0) ) {
+        return this.state;
+      }
+
+      var newGrid = this.state.grid.slice(); 
+      var newRow = ( direction == "up" ? (row + 1) : (row - 1) ); 
+
+      var movingSquare = newGrid[newRow][column];
+      var newEmptyPos = [newRow, column]; 
+
+      newGrid[newRow][column] = null;
+      newGrid[row][column] = movingSquare; 
+
+      return {
+        grid: newGrid,
+        emptyPos: newEmptyPos
+      };
+    }
+
+    this.moveSquareHorizontal = function(direction){
+      const row = this.state.emptyPos[0];
+      const column = this.state.emptyPos[1]; 
+
+      // Do nothing if move is invalid
+      if ( (direction == "left" && column == 3) || (direction == "right" && column == 0) ) {
+        return this.state;
+      }
+
+      var newGrid = this.state.grid.slice(); 
+      var newColumn = ( direction == "right" ? (column - 1) : (column + 1) );
+
+      var movingSquare = newGrid[row][newColumn];
+      var newEmptyPos = [row, newColumn]; 
+
+      newGrid[row][newColumn] = null;
+      newGrid[row][column] = movingSquare; 
+
+      return {
+        grid: newGrid,
+        emptyPos: newEmptyPos
+      }; 
+    }
+
+    // Performs a random number of moves to randomize board
+    var directions = ["up", "down", "left", "right"];
+
+    for(var i = 0; i < 200; i++){ 
+      var ind = Math.floor( Math.random() * 4);
+
+      var direction = directions[ind];
+
+      var newState;
+
+      if (ind < 2) {
+        newState = this.moveSquareVertical(direction);
+      }
+      else{
+        newState = this.moveSquareHorizontal(direction);
+      }
+
+      this.state.grid = newState.grid;
+      this.state.emptyPos = newState.emptyPos;
+    } 
+
   }
 
   /* Life Cycle Functions */
-  componentWillMount(){
-    document.addEventListener("keyup", this.handleOnKeyUp.bind(this));
+  componentDidMount(){
+    document.addEventListener("keyup", this.handleOnKeyUp.bind(this)); 
   }
 
   componentWillUnmount(){
     document.removeEventListener("keyup", this.handleOnKeyUp.bind(this));
   } 
 
-  moveSquareVertical(direction){
-    // Coordinates of empty square
-    const row = this.state.emptyPos[0];
-    const column = this.state.emptyPos[1]; 
-
-    if ( (direction == "ArrowUp" && row == 3) || (direction == "ArrowDown" && row == 0) ){
-      return;
-    }
-
-    var newGrid = this.state.grid.slice(); 
-    var newRow = ( direction == "ArrowUp" ? (row + 1) : (row - 1) ); 
-
-    var movingSquare = newGrid[newRow][column];
-    var newEmptyPos = [newRow, column]; 
-
-    newGrid[newRow][column] = null;
-    newGrid[row][column] = movingSquare; 
-
-    this.setState({
-      grid: newGrid,
-      emptyPos: newEmptyPos
-    }); 
-  }
-
-  moveSquareHorizontal(direction){
-    // Coordinates of empty square
-    const row = this.state.emptyPos[0];
-    const column = this.state.emptyPos[1]; 
-
-    if ( (direction == "ArrowLeft" && column == 3) || (direction == "ArrowRight" && column == 0) ){
-      return;
-    }
-
-    var newGrid = this.state.grid.slice(); 
-    var newColumn = ( direction == "ArrowRight" ? (column - 1) : (column + 1) );
-
-    var movingSquare = newGrid[row][newColumn];
-    var newEmptyPos = [row, newColumn]; 
-
-    newGrid[row][newColumn] = null;
-    newGrid[row][column] = movingSquare; 
-
-    this.setState({
-      grid: newGrid,
-      emptyPos: newEmptyPos
-    }); 
-  }
-
   handleOnKeyUp(e){
+    var direction = e.key.replace("Arrow","").toLowerCase();
+
+    var newState;
+
     switch(e.key){
       case "ArrowUp":
       case "ArrowDown":
-        this.moveSquareVertical(e.key);
+        newState = this.moveSquareVertical(direction);
         break;
+
       case "ArrowLeft":
       case "ArrowRight":
-        this.moveSquareHorizontal(e.key);
+        newState = this.moveSquareHorizontal(direction);
         break;
+
       default:
-        return;
+        newState = this.state;
     }
+
+    this.setState(newState);
   }
 
   render(){
