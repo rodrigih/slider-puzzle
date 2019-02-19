@@ -15,6 +15,10 @@ class App extends Component {
         </header>
 
         <Game />
+
+        <p>
+          Press the arrow keys to move the tiles.
+        </p>
       </div>
     );
   }

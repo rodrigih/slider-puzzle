@@ -57,7 +57,17 @@ class Game extends Component {
         [9, 10, 11, 12],
         [13, 14, 15, null]
       ], 
-      emptyPos: [3,3]
+
+      answerGrid: [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, null]
+      ],
+
+      emptyPos: [3,3],
+
+      isSolved: false
     }; 
 
     /* Define functions to move squares here so grid can be randomized on initialization */
@@ -142,7 +152,29 @@ class Game extends Component {
     document.removeEventListener("keyup", this.handleOnKeyUp.bind(this));
   } 
 
+  isSolved(){ 
+    const grid = this.state.grid.slice();
+    const answerGrid = this.state.answerGrid.slice();
+
+    var isSolved = true;
+
+    for(var row = 0; row < grid.length; row++){ 
+      for(var col = 0; col < grid.length; col++){ 
+        if (grid[row][col] !== answerGrid[row][col]) {
+          isSolved = false;
+          break;
+        }
+      }
+    } 
+
+    this.setState({ isSolved: isSolved });
+  }
+
   handleOnKeyUp(e){
+    if (this.state.isSolved) {
+      return;
+    }
+
     var direction = e.key.replace("Arrow","").toLowerCase();
 
     var newState;
@@ -163,15 +195,27 @@ class Game extends Component {
     }
 
     this.setState(newState);
-  }
+
+    this.isSolved();
+  } 
 
   render(){
+    var statusClass = "game-state"; 
+
+    if (! this.state.isSolved) {
+      statusClass += " hidden";
+    }
+
     return (
-      <div className="Game">
-        <Board
-          grid={this.state.grid}
-          onKeyPress={this.handleOnKeyPress}
-        />
+      <div>
+        <p className={statusClass}>Puzzle is solved!</p>
+
+        <div className="Game"> 
+          <Board
+            grid={this.state.grid}
+            onKeyPress={this.handleOnKeyPress}
+          /> 
+        </div> 
       </div>
     );
   }

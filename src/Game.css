@@ -8,18 +8,23 @@
   display: flex;
   min-width: 50px;
   min-height: 50px;
-  border: thin solid black;
+  border: thin solid grey;
   align-items: center;
   justify-content: center;
   border-radius: 10%;
 }
 
 .red-square{
-  background-color: #C11200;
+  background-color: #8E0D00;
   color: #DDDDDD;
 }
 
 .beige-square{
-  background-color: #FCF3CF;
+  background-color: #FFFF9D;
   color: #222222;
 }
+
+.game-state{
+  font-weight: bold;
+  color: green;
+} 

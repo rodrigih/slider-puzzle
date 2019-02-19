@@ -24,3 +24,7 @@ div{
 .inline-flex{
   display: inline-flex;
 }
+
+.hidden{
+  visibility: hidden;
+}
