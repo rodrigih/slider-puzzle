@@ -3,11 +3,11 @@ import './Game.css';
 
 function Square(props){
   var colour;
-  if (props.value == null) {
+  if (props.value === null) {
     colour = "";
   }
   else{
-    colour = ( props.value % 2 == 0 ? "red-square" : "beige-square" );
+    colour = ( props.value % 2 === 0 ? "red-square" : "beige-square" );
   }
   return (
       <div className={colour}>
@@ -49,6 +49,13 @@ class Game extends Component {
   constructor(props){
     super(props); 
 
+    this.answerGrid = [
+      [1, 2, 3, 4],
+      [5, 6, 7, 8],
+      [9, 10, 11, 12],
+      [13, 14, 15, null]
+    ];
+
     /* Set initial state */
     this.state = {
       grid: [
@@ -57,32 +64,24 @@ class Game extends Component {
         [9, 10, 11, 12],
         [13, 14, 15, null]
       ], 
-
-      answerGrid: [
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 14, 15, null]
-      ],
-
+      
       emptyPos: [3,3],
 
       isSolved: false
     }; 
 
-    /* Define functions to move squares here so grid can be randomized on initialization */
-
-    this.moveSquareVertical = function(direction){
-      const row = this.state.emptyPos[0];
-      const column = this.state.emptyPos[1]; 
+    /* Define functions to move squares here so grid can be randomized on initialization */ 
+    this.moveSquareVertical = function(direction, grid, emptyPos){
+      const row = emptyPos[0];
+      const column = emptyPos[1]; 
 
       // Do nothing if move is invalid
-      if ( (direction == "up" && row == 3) || (direction == "down" && row == 0) ) {
-        return this.state;
+      if ( (direction === "up" && row === 3) || (direction === "down" && row === 0) ) {
+        return {grid: grid.slice(), emptyPos: emptyPos.slice()};
       }
 
-      var newGrid = this.state.grid.slice(); 
-      var newRow = ( direction == "up" ? (row + 1) : (row - 1) ); 
+      var newGrid = grid.slice(); 
+      var newRow = ( direction === "up" ? (row + 1) : (row - 1) ); 
 
       var movingSquare = newGrid[newRow][column];
       var newEmptyPos = [newRow, column]; 
@@ -96,17 +95,17 @@ class Game extends Component {
       };
     }
 
-    this.moveSquareHorizontal = function(direction){
-      const row = this.state.emptyPos[0];
-      const column = this.state.emptyPos[1]; 
+    this.moveSquareHorizontal = function(direction, grid, emptyPos){
+      const row = emptyPos[0];
+      const column = emptyPos[1]; 
 
       // Do nothing if move is invalid
-      if ( (direction == "left" && column == 3) || (direction == "right" && column == 0) ) {
-        return this.state;
+      if ( (direction === "left" && column === 3) || (direction === "right" && column === 0) ) {
+        return {grid: grid.slice(), emptyPos: emptyPos.slice()};
       }
 
-      var newGrid = this.state.grid.slice(); 
-      var newColumn = ( direction == "right" ? (column - 1) : (column + 1) );
+      var newGrid = grid.slice(); 
+      var newColumn = ( direction === "right" ? (column - 1) : (column + 1) );
 
       var movingSquare = newGrid[row][newColumn];
       var newEmptyPos = [row, newColumn]; 
@@ -118,29 +117,47 @@ class Game extends Component {
         grid: newGrid,
         emptyPos: newEmptyPos
       }; 
-    }
-
-    // Performs a random number of moves to randomize board
-    var directions = ["up", "down", "left", "right"];
-
-    for(var i = 0; i < 200; i++){ 
-      var ind = Math.floor( Math.random() * 4);
-
-      var direction = directions[ind];
-
-      var newState;
-
-      if (ind < 2) {
-        newState = this.moveSquareVertical(direction);
-      }
-      else{
-        newState = this.moveSquareHorizontal(direction);
-      }
-
-      this.state.grid = newState.grid;
-      this.state.emptyPos = newState.emptyPos;
     } 
 
+    this.shuffle = function(){ 
+      var grid = this.state.grid.map((c) => c.slice());
+      var emptyPos = this.state.emptyPos.slice();
+
+      var directions = ["up", "down", "left", "right"];
+
+      for(var i = 0; i < 200; i++){ 
+      //for(var i = 0; i < 5; i++){ 
+        var ind = Math.floor( Math.random() * 4);
+
+        var direction = directions[ind];
+
+        var newState;
+
+        if (ind < 2) {
+          newState = this.moveSquareVertical(direction, grid, emptyPos);
+        }
+        else{
+          newState = this.moveSquareHorizontal(direction, grid, emptyPos);
+        }
+
+        grid = newState.grid;
+        emptyPos = newState.emptyPos;
+      } 
+
+      return {
+        grid: grid,
+        emptyPos: emptyPos,
+        isSolved: false 
+      };
+    } 
+
+    // Bind event handlers
+    this.handleShuffleClick = this.handleShuffleClick.bind(this);
+
+    // Shuffle board when intializing
+    var newState = this.shuffle();
+    this.state.grid = newState.grid; 
+    this.state.emptyPos = newState.emptyPos; 
   }
 
   /* Life Cycle Functions */
@@ -152,9 +169,9 @@ class Game extends Component {
     document.removeEventListener("keyup", this.handleOnKeyUp.bind(this));
   } 
 
-  isSolved(){ 
+  checkIfSolved(){ 
     const grid = this.state.grid.slice();
-    const answerGrid = this.state.answerGrid.slice();
+    const answerGrid = this.answerGrid.slice();
 
     var isSolved = true;
 
@@ -182,12 +199,12 @@ class Game extends Component {
     switch(e.key){
       case "ArrowUp":
       case "ArrowDown":
-        newState = this.moveSquareVertical(direction);
+        newState = this.moveSquareVertical(direction, this.state.grid, this.state.emptyPos);
         break;
 
       case "ArrowLeft":
       case "ArrowRight":
-        newState = this.moveSquareHorizontal(direction);
+        newState = this.moveSquareHorizontal(direction, this.state.grid, this.state.emptyPos);
         break;
 
       default:
@@ -196,26 +213,51 @@ class Game extends Component {
 
     this.setState(newState);
 
-    this.isSolved();
+    this.checkIfSolved();
   } 
+
+  handleShuffleClick(){
+    var newState = this.shuffle();
+    this.setState(newState);
+  }
+
+  solvePuzzle(){ 
+    var answerGrid = this.answerGrid.map((c) => c.slice());
+    var newState = {
+      grid: answerGrid,
+      emptyPos: [3, 3],
+      isSolved: true
+    };
+
+    this.setState(newState);
+  }
 
   render(){
     var statusClass = "game-state"; 
 
     if (! this.state.isSolved) {
       statusClass += " hidden";
-    }
+    } 
 
     return (
       <div>
-        <p className={statusClass}>Puzzle is solved!</p>
+        <div className={statusClass} style={{marginBottom: "1em"}}>
+          <p> Puzzle is solved! </p>
+          <button onClick={this.handleShuffleClick}>
+            Retry
+          </button>
+        </div>
 
         <div className="Game"> 
           <Board
             grid={this.state.grid}
             onKeyPress={this.handleOnKeyPress}
           /> 
-        </div> 
+        </div>
+
+        <div style={{marginTop: "1em"}}>
+          <button onClick={() => this.solvePuzzle()} > Solve puzzle </button>
+        </div>
       </div>
     );
   }
