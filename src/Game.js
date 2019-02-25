@@ -3,7 +3,10 @@ import './Game.css';
 
 function Square(props){
   var colour;
-  if (props.value === null) {
+  if (props.isAnswer){
+    colour = ( props.value === null ? "blank-square" : "white-square");
+  }
+  else if (props.value === null) {
     colour = "";
   }
   else{
@@ -14,8 +17,7 @@ function Square(props){
         {props.value}
       </div>
   );
-}
-
+} 
 
 class Board extends Component{ 
   renderSquare(val, i){ 
@@ -23,17 +25,23 @@ class Board extends Component{
         <Square
           key={i}
           value={val}
+          isAnswer={this.props.isAnswer}
         />
       ); 
   }
 
   drawGrid(){
     const grid = this.props.grid; 
+    var boardClass = ( this.props.isAnswer ? "answer-board" : "game-board");
+    var rowClass = ( this.props.isAnswer ? "answer-row" : "game-row");
 
     return (
-      <div className="inline-flex game-board">
+      <div className={`inline-flex flex-column ${boardClass}`}>
         {grid.map(
-          (curr, i) => (<div className="flex row" key={`row${i}`}> {curr.map(this.renderSquare)} </div>)
+          (curr, i) => (
+            <div className={`flex row ${rowClass}`} key={`row${i}`}>
+              {curr.map(this.renderSquare.bind(this))}
+            </div>)
          )
         }
       </div>
@@ -54,7 +62,7 @@ class Game extends Component {
       [5, 6, 7, 8],
       [9, 10, 11, 12],
       [13, 14, 15, null]
-    ];
+    ]; 
 
     /* Set initial state */
     this.state = {
@@ -240,23 +248,34 @@ class Game extends Component {
     } 
 
     return (
-      <div>
-        <div className={statusClass} style={{marginBottom: "1em"}}>
+      <div className="Game">
+        <div className={statusClass} style={{padding: "1em 0"}}>
           <p> Puzzle is solved! </p>
-          <button onClick={this.handleShuffleClick}>
+          <button className="btn" onClick={this.handleShuffleClick}>
             Retry
           </button>
         </div>
 
-        <div className="Game"> 
-          <Board
-            grid={this.state.grid}
-            onKeyPress={this.handleOnKeyPress}
-          /> 
+        <div className="Game flex justify-center">
+          <div style={{marginRight: "2em"}}>
+            <p> From 1 to 15 </p>
+            <Board
+              grid={this.answerGrid}
+              isAnswer={true}
+            />
+          </div>
+
+          <div style={{marginTop: "auto"}}>
+            <Board
+              grid={this.state.grid}
+              onKeyPress={this.handleOnKeyPress}
+              isAnswer={false}
+            /> 
+          </div>
         </div>
 
         <div style={{marginTop: "1em"}}>
-          <button onClick={() => this.solvePuzzle()} > Solve puzzle </button>
+          <button className="btn" onClick={() => this.solvePuzzle()} > Solve </button>
         </div>
       </div>
     );

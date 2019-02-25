@@ -9,15 +9,17 @@ class App extends Component {
       <div className="App">
 
         <header className="flex App-header">
-          <h1>Slider Puzzle</h1>
+          <h1 className="App-title">Slider Puzzle</h1>
           <span> Created using React </span>
           <img src={logo} className="App-logo" alt="logo" />
         </header>
 
         <Game />
 
-        <p>
-          Press the arrow keys to move the tiles.
+        <p style={{color: "white"}}>
+          <span id="instructions">Instructions:</span> Press the arrow keys to move the tiles.
+          <br />
+          Make the numbers go from 1 to 15 like the grid on the left.
         </p>
       </div>
     );

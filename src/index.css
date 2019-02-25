@@ -6,6 +6,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #21618C;
+}
+
+p{
+  line-height: 1.6;
 }
 
 code {
@@ -17,8 +22,26 @@ div{
   box-sizing: border-box;
 }
 
+header{
+  color: white;
+}
+
+#instructions{
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .flex{
   display: flex;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
+.justify-center{
+  justify-content: center;
 }
 
 .inline-flex{
