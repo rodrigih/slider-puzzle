@@ -8,9 +8,19 @@
   flex-direction: column;
 }
 
+.divider{
+  border: thin solid #00047A;
+  display: inline-block;
+  width: 100px; 
+}
+
 .answer-board{
   border: 5px none none; 
   margin-bottom: 5px;
+}
+
+.move-counter{
+  font-size: 20px; 
 }
 
 .game-board{ 
@@ -41,7 +51,7 @@
 }
 
 .blank-square{
-  background: repeating-linear-gradient(-45deg, white, #00047A 5px, white 5px, #00047A 10px);
+  background: repeating-linear-gradient(-45deg, white, white 5px, #00047A 5px, #00047A 10px);
 }
 
 .red-square{

@@ -75,17 +75,20 @@ class Game extends Component {
       
       emptyPos: [3,3],
 
+      moves: 0,
+
       isSolved: false
     }; 
 
     /* Define functions to move squares here so grid can be randomized on initialization */ 
-    this.moveSquareVertical = function(direction, grid, emptyPos){
+    this.moveSquareVertical = function(direction, grid, emptyPos, moves){
+      console.log(`FOOBAR: ${moves}`);
       const row = emptyPos[0];
       const column = emptyPos[1]; 
 
       // Do nothing if move is invalid
       if ( (direction === "up" && row === 3) || (direction === "down" && row === 0) ) {
-        return {grid: grid.slice(), emptyPos: emptyPos.slice()};
+        return {grid: grid.slice(), emptyPos: emptyPos.slice(), moves: moves};
       }
 
       var newGrid = grid.slice(); 
@@ -99,17 +102,18 @@ class Game extends Component {
 
       return {
         grid: newGrid,
-        emptyPos: newEmptyPos
+        emptyPos: newEmptyPos,
+        moves: (moves + 1)
       };
     }
 
-    this.moveSquareHorizontal = function(direction, grid, emptyPos){
+    this.moveSquareHorizontal = function(direction, grid, emptyPos, moves){
       const row = emptyPos[0];
       const column = emptyPos[1]; 
 
       // Do nothing if move is invalid
       if ( (direction === "left" && column === 3) || (direction === "right" && column === 0) ) {
-        return {grid: grid.slice(), emptyPos: emptyPos.slice()};
+        return {grid: grid.slice(), emptyPos: emptyPos.slice(), moves: moves};
       }
 
       var newGrid = grid.slice(); 
@@ -123,7 +127,8 @@ class Game extends Component {
 
       return {
         grid: newGrid,
-        emptyPos: newEmptyPos
+        emptyPos: newEmptyPos,
+        moves: (moves + 1)
       }; 
     } 
 
@@ -142,10 +147,10 @@ class Game extends Component {
         var newState;
 
         if (ind < 2) {
-          newState = this.moveSquareVertical(direction, grid, emptyPos);
+          newState = this.moveSquareVertical(direction, grid, emptyPos, 0);
         }
         else{
-          newState = this.moveSquareHorizontal(direction, grid, emptyPos);
+          newState = this.moveSquareHorizontal(direction, grid, emptyPos, 0);
         }
 
         grid = newState.grid;
@@ -155,7 +160,8 @@ class Game extends Component {
       return {
         grid: grid,
         emptyPos: emptyPos,
-        isSolved: false 
+        isSolved: false,
+        moves: 0 
       };
     } 
 
@@ -207,12 +213,12 @@ class Game extends Component {
     switch(e.key){
       case "ArrowUp":
       case "ArrowDown":
-        newState = this.moveSquareVertical(direction, this.state.grid, this.state.emptyPos);
+        newState = this.moveSquareVertical(direction, this.state.grid, this.state.emptyPos, this.state.moves);
         break;
 
       case "ArrowLeft":
       case "ArrowRight":
-        newState = this.moveSquareHorizontal(direction, this.state.grid, this.state.emptyPos);
+        newState = this.moveSquareHorizontal(direction, this.state.grid, this.state.emptyPos, this.state.moves);
         break;
 
       default:
@@ -274,9 +280,16 @@ class Game extends Component {
           </div>
         </div>
 
+        <div className="move-counter">
+          Moves: {this.state.moves}
+        </div>
+
+        <div className="divider"> </div> 
+
         <div style={{marginTop: "1em"}}>
           <button className="btn" onClick={() => this.solvePuzzle()} > Solve </button>
         </div>
+
       </div>
     );
   }
