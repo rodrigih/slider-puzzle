@@ -31,15 +31,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.btn{
-  border: none;
-  color: #FFF;
-  background-color: #26A69A;
-  text-align: center;
-  border-radius: 2px;
-  padding: 0.5em 1em;
-  font-size: 17px;
-  font-weight: bold;
-}
+} 

@@ -2,8 +2,31 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css'; 
 import Game from './Game'; 
+import Options from './Options'; 
 
 class App extends Component {
+  constructor(props){
+    super(props);
+
+    // Bind event handlers
+    this.handleOptionsClick = this.handleOptionsClick.bind(this); 
+    this.handleCloseClick = this.handleCloseClick.bind(this);
+
+    // Set initial state
+    this.state = {
+      optionsClass: "display-none"
+    } 
+  }
+
+  /* Functions defined here so that Game component can open the Options component */
+  handleOptionsClick(){
+    this.setState({optionsClass: "Options-container"});
+  }
+
+  handleCloseClick(){
+    this.setState({optionsClass: "display-none"});
+  }
+
   render() { 
     return ( 
       <div className="App">
@@ -14,7 +37,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
         </header>
 
-        <Game />
+        <Options
+          optionsClass={this.state.optionsClass}
+          handleCloseClick={this.handleCloseClick}
+        />
+
+        <Game 
+          handleOptionsClick={this.handleOptionsClick}
+        />
 
         <p style={{color: "white"}}>
           <span id="instructions">Instructions:</span> Press the arrow keys to move the tiles.

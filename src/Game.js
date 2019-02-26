@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Game.css';
+import Answers from './AnswerGrids.js'; 
 
 function Square(props){
   var colour;
@@ -57,13 +58,6 @@ class Game extends Component {
   constructor(props){
     super(props); 
 
-    this.answerGrid = [
-      [1, 2, 3, 4],
-      [5, 6, 7, 8],
-      [9, 10, 11, 12],
-      [13, 14, 15, null]
-    ]; 
-
     /* Set initial state */
     this.state = {
       grid: [
@@ -72,6 +66,8 @@ class Game extends Component {
         [9, 10, 11, 12],
         [13, 14, 15, null]
       ], 
+
+      answerGrid: Answers[0],
       
       emptyPos: [3,3],
 
@@ -82,7 +78,6 @@ class Game extends Component {
 
     /* Define functions to move squares here so grid can be randomized on initialization */ 
     this.moveSquareVertical = function(direction, grid, emptyPos, moves){
-      console.log(`FOOBAR: ${moves}`);
       const row = emptyPos[0];
       const column = emptyPos[1]; 
 
@@ -139,7 +134,6 @@ class Game extends Component {
       var directions = ["up", "down", "left", "right"];
 
       for(var i = 0; i < 200; i++){ 
-      //for(var i = 0; i < 5; i++){ 
         var ind = Math.floor( Math.random() * 4);
 
         var direction = directions[ind];
@@ -185,7 +179,7 @@ class Game extends Component {
 
   checkIfSolved(){ 
     const grid = this.state.grid.slice();
-    const answerGrid = this.answerGrid.slice();
+    const answerGrid = this.state.answerGrid.grid.slice();
 
     var isSolved = true;
 
@@ -236,7 +230,7 @@ class Game extends Component {
   }
 
   solvePuzzle(){ 
-    var answerGrid = this.answerGrid.map((c) => c.slice());
+    var answerGrid = this.state.answerGrid.grid.map((c) => c.slice());
     var newState = {
       grid: answerGrid,
       emptyPos: [3, 3],
@@ -264,9 +258,9 @@ class Game extends Component {
 
         <div className="Game flex justify-center">
           <div style={{marginRight: "2em"}}>
-            <p> From 1 to 15 </p>
+            {this.state.answerGrid.title}
             <Board
-              grid={this.answerGrid}
+              grid={this.state.answerGrid.grid}
               isAnswer={true}
             />
           </div>
@@ -286,7 +280,9 @@ class Game extends Component {
 
         <div className="divider"> </div> 
 
-        <div style={{marginTop: "1em"}}>
+        <div className="flex justify-center btn-container">
+          <button className="btn" onClick={this.props.handleOptionsClick}> Options </button>
+
           <button className="btn" onClick={() => this.solvePuzzle()} > Solve </button>
         </div>
 

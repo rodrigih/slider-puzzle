@@ -32,6 +32,14 @@ header{
   text-decoration: underline;
 }
 
+.hidden{
+  visibility: hidden;
+}
+
+.display-none{
+  display: none;
+}
+
 .flex{
   display: flex;
 }
@@ -50,4 +58,23 @@ header{
 
 .hidden{
   visibility: hidden;
+}
+
+.btn-container{
+  margin-top: 1em; 
+}
+
+.btn-container > button{
+  margin-right: 1em; 
+}
+
+.btn{
+  border: none;
+  color: #FFF;
+  background-color: #26A69A;
+  text-align: center;
+  border-radius: 2px;
+  padding: 0.5em 1em;
+  font-size: 17px;
+  font-weight: bold;
 }
