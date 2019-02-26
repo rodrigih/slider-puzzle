@@ -1,58 +1,7 @@
 import React, { Component } from 'react';
 import './Game.css';
 import Answers from './AnswerGrids.js'; 
-
-function Square(props){
-  var colour;
-  if (props.isAnswer){
-    colour = ( props.value === null ? "blank-square" : "white-square");
-  }
-  else if (props.value === null) {
-    colour = "";
-  }
-  else{
-    colour = ( props.value % 2 === 0 ? "red-square" : "beige-square" );
-  }
-  return (
-      <div className={colour}>
-        {props.value}
-      </div>
-  );
-} 
-
-class Board extends Component{ 
-  renderSquare(val, i){ 
-      return (
-        <Square
-          key={i}
-          value={val}
-          isAnswer={this.props.isAnswer}
-        />
-      ); 
-  }
-
-  drawGrid(){
-    const grid = this.props.grid; 
-    var boardClass = ( this.props.isAnswer ? "answer-board" : "game-board");
-    var rowClass = ( this.props.isAnswer ? "answer-row" : "game-row");
-
-    return (
-      <div className={`inline-flex flex-column ${boardClass}`}>
-        {grid.map(
-          (curr, i) => (
-            <div className={`flex row ${rowClass}`} key={`row${i}`}>
-              {curr.map(this.renderSquare.bind(this))}
-            </div>)
-         )
-        }
-      </div>
-    ); 
-  } 
-
-  render(){
-    return this.drawGrid();
-  }
-}
+import Board from './Board.js'; 
 
 class Game extends Component {
   constructor(props){

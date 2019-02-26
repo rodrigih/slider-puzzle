@@ -66,6 +66,7 @@ header{
 
 .btn-container > button{
   margin-right: 1em; 
+  cursor: pointer;
 }
 
 .btn{

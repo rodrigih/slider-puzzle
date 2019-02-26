@@ -12,57 +12,11 @@
   border: thin solid #00047A;
   display: inline-block;
   width: 100px; 
-}
-
-.answer-board{
-  border: 5px none none; 
-  margin-bottom: 5px;
-}
+} 
 
 .move-counter{
   font-size: 20px; 
-}
-
-.game-board{ 
-  border: 5px groove grey;
 } 
-
-.row > div{
-  display: flex;
-  min-width: 50px;
-  min-height: 50px;
-  align-items: center;
-  justify-content: center; 
-  font-weight: bold;
-} 
-
-.game-row > div{
-  border: thin solid grey;
-  border-radius: 15%;
-}
-
-.answer-row > div{
-  border: thin solid #00047A;
-}
-
-.white-square{
-  color: #00047A;
-  border: thin solid #00047A;
-}
-
-.blank-square{
-  background: repeating-linear-gradient(-45deg, white, white 5px, #00047A 5px, #00047A 10px);
-}
-
-.red-square{
-  background-color: #8E0D00;
-  color: #DDDDDD;
-}
-
-.beige-square{
-  background-color: #FFFF9D;
-  color: #222222;
-}
 
 .game-state{
   font-weight: bold;
