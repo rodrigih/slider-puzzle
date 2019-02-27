@@ -11,10 +11,10 @@ class Options extends Component{
     this.handlePrevClick = this.handlePrevClick.bind(this);
     this.handleNextClick = this.handleNextClick.bind(this);
 
+    this.totalPages =  Math.ceil(Answers.length / 4)
+
     // Set initial state
-    this.state = {
-      page: 1
-    }
+    this.state = { page: 1 }
   } 
 
   handlePrevClick(){
@@ -28,9 +28,8 @@ class Options extends Component{
   } 
 
   render(){
-    var lastPage = Math.ceil(Answers.length / 4);
     var prevBtnClass = ( this.state.page === 1 ? "hidden" : "btn" );
-    var nextBtnClass = ( this.state.page === lastPage ? "hidden" : "btn" );
+    var nextBtnClass = ( this.state.page === this.totalPages ? "hidden" : "btn" );
 
     var start = ((this.state.page - 1) * 4);
 
@@ -90,8 +89,11 @@ class Options extends Component{
           <div className="flex justify-center btn-container">
             <button className={prevBtnClass} onClick={this.handlePrevClick}> Previous</button>
             <button className={nextBtnClass} onClick={this.handleNextClick}> Next </button> 
-          </div>
+          </div> 
 
+          <div className="divider"></div>
+
+          <p> Page {this.state.page} of {this.totalPages}</p>
         </div> 
       </div>
     );

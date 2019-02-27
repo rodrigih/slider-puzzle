@@ -1,12 +1,7 @@
 .Game{
   background: white;
   padding-bottom: 2em;
-}
-
-.Board{
-  display: inline-flex;
-  flex-direction: column;
-}
+} 
 
 .divider{
   border: thin solid #00047A;

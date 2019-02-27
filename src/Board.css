@@ -1,6 +1,15 @@
+.Board{
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.Board-clickable{
+  border: 3px dashed transparent;
+}
+
 .Board-clickable:hover{
-  border: 3px solid yellow;
-  color: yellow; 
+  border: 3px dashed #F39C12;
+  cursor: pointer;
 }
 
 .Board-answer{
