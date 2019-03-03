@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css'; 
 import Game from './Game'; 
+import Answers from './AnswerGrids.js';
 import Options from './Options'; 
 
 class App extends Component {
@@ -11,10 +12,13 @@ class App extends Component {
     // Bind event handlers
     this.handleOptionsClick = this.handleOptionsClick.bind(this); 
     this.handleCloseClick = this.handleCloseClick.bind(this);
+    this.handleBoardClick = this.handleBoardClick.bind(this);
 
     // Set initial state
     this.state = {
-      optionsClass: "display-none"
+      optionsClass: "display-none",
+      answerGrid: Answers[0],
+      ansInd: 0
     } 
   }
 
@@ -25,6 +29,14 @@ class App extends Component {
 
   handleCloseClick(){
     this.setState({optionsClass: "display-none"});
+  }
+
+  handleBoardClick(ind){
+    this.setState({
+      answerGrid: Answers[ind],
+      ansInd: ind,
+      optionsClass: "display-none"
+    });
   }
 
   render() { 
@@ -40,10 +52,13 @@ class App extends Component {
         <Options
           optionsClass={this.state.optionsClass}
           handleCloseClick={this.handleCloseClick}
+          handleBoardClick={this.handleBoardClick}
         />
 
         <Game 
           handleOptionsClick={this.handleOptionsClick}
+          ansInd={this.state.ansInd}
+          answerGrid={this.state.answerGrid}
         />
 
         <p style={{color: "white"}}>

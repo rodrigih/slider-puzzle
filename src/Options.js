@@ -36,16 +36,20 @@ class Options extends Component{
     const row1Boards = Answers.slice(start,(start + 2)); 
     const row2Boards = Answers.slice((start + 2),(start + 4)); 
 
+    const handleBoardClick = this.props.handleBoardClick;
+
     var row1 = (
       <div className="flex justify-center Options-answer-grids"> 
-        {
+        { 
           row1Boards.map( function(curr,ind){
+            var key = (start + ind);
             return (
-              <div key={`Board ${ind}`}> 
+              <div key={`Board ${key}`}> 
                 {curr.title}
                 <Board 
                   grid={curr.grid}
                   isClickable={true}
+                  handleBoardClick={() => {handleBoardClick(key)}}
                   isAnswer={true}
                 />
               </div>
@@ -59,12 +63,14 @@ class Options extends Component{
       <div className="flex justify-center Options-answer-grids">
         {
           row2Boards.map( function(curr,ind){
+            var key = (start + ind + 2);
             return (
-              <div key={`Board ${(ind + 2)}`}>
+              <div key={`Board ${key}`}>
                 {curr.title}
                 <Board 
                   grid={curr.grid}
                   isClickable={true}
+                  handleBoardClick={() => {handleBoardClick(key)}}
                   isAnswer={true}
                 />
               </div>
@@ -72,7 +78,7 @@ class Options extends Component{
           })
         }
       </div> 
-    );
+    ); 
 
     return (
       <div className={this.props.optionsClass}> 
@@ -93,7 +99,8 @@ class Options extends Component{
 
           <div className="divider"></div>
 
-          <p> Page {this.state.page} of {this.totalPages}</p>
+          <p> Page {this.state.page} of {this.totalPages}</p> 
+
         </div> 
       </div>
     );

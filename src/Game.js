@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Game.css';
-import Answers from './AnswerGrids.js'; 
 import Board from './Board.js'; 
 
 class Game extends Component {
@@ -16,8 +15,6 @@ class Game extends Component {
         [13, 14, 15, null]
       ], 
 
-      answerGrid: Answers[0],
-      
       emptyPos: [3,3],
 
       moves: 0,
@@ -126,9 +123,18 @@ class Game extends Component {
     document.removeEventListener("keyup", this.handleOnKeyUp.bind(this));
   } 
 
+  /* Reset the game board if the answer board was changed */
+  componentDidUpdate(prevProps){
+    if(prevProps.ansInd !== this.props.ansInd){
+      var newState = this.shuffle();
+      newState.moves = 0;
+      this.setState(newState);
+    }
+  }
+
   checkIfSolved(){ 
     const grid = this.state.grid.slice();
-    const answerGrid = this.state.answerGrid.grid.slice();
+    const answerGrid = this.props.answerGrid.grid.slice();
 
     var isSolved = true;
 
@@ -179,10 +185,11 @@ class Game extends Component {
   }
 
   solvePuzzle(){ 
-    var answerGrid = this.state.answerGrid.grid.map((c) => c.slice());
+    var answerGrid = this.props.answerGrid.grid.map((c) => c.slice());
+    var emptyPos = this.props.answerGrid.emptyPos.slice();
     var newState = {
       grid: answerGrid,
-      emptyPos: [3, 3],
+      emptyPos: emptyPos,
       isSolved: true
     };
 
@@ -207,9 +214,9 @@ class Game extends Component {
 
         <div className="Game flex justify-center">
           <div style={{marginRight: "2em"}}>
-            {this.state.answerGrid.title}
+            {this.props.answerGrid.title}
             <Board
-              grid={this.state.answerGrid.grid}
+              grid={this.props.answerGrid.grid}
               isAnswer={true}
             />
           </div>

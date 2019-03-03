@@ -40,7 +40,9 @@ class Board extends Component{
     }
 
     return (
-      <div className={`inline-flex flex-column ${boardClass}`}>
+      <div className={`inline-flex flex-column ${boardClass}`}
+        onClick={this.props.handleBoardClick}
+      >
         {grid.map(
           (curr, i) => (
             <div className={`flex Board-row ${rowClass}`} key={`row${i}`}>

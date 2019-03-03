@@ -262,7 +262,7 @@ const Answers = [
       [7, 11, 2, 14],
       [10, 6, 15, 3]
     ],
-    emptyPos: [0, 2]
+    emptyPos: [1, 1]
   },
 
   {
