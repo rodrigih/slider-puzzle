@@ -17,6 +17,8 @@ class Game extends Component {
 
       emptyPos: [3,3],
 
+      highScore: 0,
+
       moves: 0,
 
       isSolved: false
@@ -79,6 +81,7 @@ class Game extends Component {
 
       var directions = ["up", "down", "left", "right"];
 
+      // Perform a random number of moves to shuffle the board
       for(var i = 0; i < 200; i++){ 
         var ind = Math.floor( Math.random() * 4);
 
@@ -147,7 +150,17 @@ class Game extends Component {
       }
     } 
 
-    this.setState({ isSolved: isSolved });
+    var highScore = this.state.highScore;
+    const moves = this.state.moves;
+
+    if (isSolved && (highScore == 0 ||  moves < highScore) ){
+      highScore = moves;
+    }
+
+    this.setState({
+      isSolved: isSolved,
+      highScore: highScore
+    });
   }
 
   handleOnKeyUp(e){
@@ -228,6 +241,10 @@ class Game extends Component {
               isAnswer={false}
             /> 
           </div>
+        </div>
+
+        <div className="move-counter">
+          High score: {this.state.highScore}
         </div>
 
         <div className="move-counter">

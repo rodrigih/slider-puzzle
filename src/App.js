@@ -64,7 +64,10 @@ class App extends Component {
         <p style={{color: "white"}}>
           <span id="instructions">Instructions:</span> Press the arrow keys to move the tiles.
           <br />
-          Make the numbers go from 1 to 15 like the grid on the left.
+          Match the grid on the left to solve the puzzle.
+          <br />
+          You can change the answer grid under <i>Options</i>
+
         </p>
       </div>
     );
