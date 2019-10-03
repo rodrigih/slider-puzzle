@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './Options.css'; 
-import Answers from './AnswerGrids.js';
+import '../styles/Options.css'; 
+import {Answers} from '../constants//AnswerGrids.js';
 import Board from './Board.js';
 
 class Options extends Component{
