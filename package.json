@@ -5,6 +5,7 @@
   "homepage": "https://rodrigih.github.io/slider-puzzle",
   "dependencies": {
     "gh-pages": "^2.0.1",
+    "prettier": "^1.18.2",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-scripts": "2.1.5"
